@@ -1,5 +1,9 @@
 package com.example.agent.config;
 
+import com.example.agent.security.TokenUtils;
+import com.example.agent.security.auth.RestAuthenticationEntryPoint;
+import com.example.agent.security.auth.TokenAuthenticationFilter;
+import com.example.agent.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,22 +14,24 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final CustomUserDetailsService jwtUserDetailsService;
-//    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-//    private final TokenUtils tokenUtils;
+    private final CustomUserDetailsService jwtUserDetailsService;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final TokenUtils tokenUtils;
 
     @Autowired
-    public WebSecurityConfig() {
-//        this.jwtUserDetailsService = jwtUserDetailsService;
-//        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-//        this.tokenUtils = tokenUtils;
+    public WebSecurityConfig(CustomUserDetailsService jwtUserDetailsService, RestAuthenticationEntryPoint restAuthenticationEntryPoint, TokenUtils tokenUtils) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.tokenUtils = tokenUtils;
     }
 
     @Bean
@@ -41,27 +47,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .cors().and().csrf().disable()
-//                // Set session management to stateless
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                // Set unauthorized requests exception handler
-//                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-//                // Set permissions on endpoints
-//                .authorizeRequests()
-//                .anyRequest().authenticated().and()
-//                // Add JWT token filter
-//                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
-//                        BasicAuthenticationFilter.class);
-
-        // Enables SSL
-//        http.requiresChannel().anyRequest().requiresSecure();
+        http
+                .cors().and().csrf().disable()
+                // Set session management to stateless
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // Set unauthorized requests exception handler
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+                // Set permissions on endpoints
+                .authorizeRequests()
+                .antMatchers("/register/**").permitAll()
+                .antMatchers("/login/**").permitAll()
+                .anyRequest().authenticated().and()
+                // Add JWT token filter
+                .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
+                        BasicAuthenticationFilter.class);
+        //    Enables SSL
+        //    http.requiresChannel().anyRequest().requiresSecure();
     }
 
     @Override
