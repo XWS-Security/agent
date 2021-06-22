@@ -1,0 +1,63 @@
+package com.example.agent.controller;
+
+import com.example.agent.controller.dto.LogInDto;
+import com.example.agent.controller.dto.UserTokenState;
+import com.example.agent.model.User;
+import com.example.agent.security.TokenUtils;
+import com.example.agent.service.impl.CustomUserDetailsService;
+import com.example.agent.service.impl.LogInService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
+public class LoginController {
+
+    private final LogInService logInService;
+    private final TokenUtils tokenUtils;
+    private final CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    public LoginController(LogInService logInService, TokenUtils tokenUtils, CustomUserDetailsService userDetailsService) {
+        this.logInService = logInService;
+        this.tokenUtils = tokenUtils;
+        this.userDetailsService = userDetailsService;
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody LogInDto authenticationRequest) {
+        try {
+            System.out.println(authenticationRequest);
+            UserTokenState state = logInService.logIn(authenticationRequest);
+            return ResponseEntity.ok(state);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/refresh")
+    public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
+        String token = tokenUtils.getToken(request);
+        String username = this.tokenUtils.getUsernameFromToken(token);
+
+        User user = (User) this.userDetailsService.loadUserByUsername(username);
+        String userType = user.getClass().getSimpleName();
+
+        if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
+            String refreshedToken = tokenUtils.refreshToken(token);
+            int expiresIn = tokenUtils.getExpiredIn();
+            return ResponseEntity.ok(new UserTokenState(userType, refreshedToken, expiresIn));
+        } else {
+            UserTokenState userTokenState = new UserTokenState();
+            return ResponseEntity.badRequest().body(userTokenState);
+        }
+    }
+}

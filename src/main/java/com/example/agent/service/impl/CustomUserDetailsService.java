@@ -1,5 +1,7 @@
 package com.example.agent.service.impl;
 
+import com.example.agent.model.User;
+import com.example.agent.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,19 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-   // private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService() {
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByNistagramUsername(username);
-//        if (user == null) {
-//            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-//        } else {
-//            return user;
-//        }
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
+        } else {
+            return user;
+        }
     }
 }

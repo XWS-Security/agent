@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
-@Table(name = "gram_user")
+@Table(name = "agent")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements UserDetails {
@@ -47,9 +47,6 @@ public abstract class User implements UserDetails {
     @Column(name = "password_reset_failed")
     private int passwordResetFailed = 0;
 
-    @Column(name = "nistagramUsername", unique = true)
-    private String agentUsername;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -63,14 +60,6 @@ public abstract class User implements UserDetails {
     private int twoFactorAuthCount = 0;
 
     protected User() {
-    }
-
-    public String getAgentUsername() {
-        return agentUsername;
-    }
-
-    public void setAgentUsername(String nistagramUsername) {
-        this.agentUsername = nistagramUsername;
     }
 
     public Long getId() {
@@ -209,7 +198,7 @@ public abstract class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return agentUsername;
+        return email;
     }
 
     @JsonIgnore
