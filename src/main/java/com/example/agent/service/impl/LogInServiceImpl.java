@@ -34,7 +34,6 @@ public class LogInServiceImpl implements LogInService {
 
         String accessToken = tokenUtils.generateToken(username);
         int accessExpiresIn = tokenUtils.getExpiredIn();
-        user.resetTwoAuthFactorCount();
         userRepository.save(user);
         return new UserTokenState(userType, accessToken, accessExpiresIn);
     }

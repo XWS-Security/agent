@@ -2,10 +2,9 @@ package com.example.agent.model;
 
 import com.example.agent.enums.Gender;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("AGENT_USER")
@@ -20,6 +19,13 @@ public class Agent extends User {
 
     @Column(name = "geneder")
     private Gender gender;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "agent_products",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id")})
+    private List<Product> products;
 
     @Override
     public String getAdministrationRole() {
@@ -44,6 +50,18 @@ public class Agent extends User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Timestamp getRegistrationSentDate() {
+        return registrationSentDate;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
 
