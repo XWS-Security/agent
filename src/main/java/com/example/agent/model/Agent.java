@@ -21,10 +21,7 @@ public class Agent extends User {
     private Gender gender;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "agent_products",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")})
+    @JoinColumn(name = "user_id")
     private List<Product> products;
 
     @Override

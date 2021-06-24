@@ -48,6 +48,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) {
+        Agent agent = (Agent) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Product> products = productRepository.findProductsByAgent(agent.getId());
+        products.remove(productRepository.findById(productId).get());
         productRepository.deleteById(productId);
     }
 
