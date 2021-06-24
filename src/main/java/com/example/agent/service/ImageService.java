@@ -1,4 +1,4 @@
-package com.example.agent.service.impl;
+package com.example.agent.service;
 
 
 import com.example.agent.controller.dto.MediaFileDto;

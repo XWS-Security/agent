@@ -1,10 +1,11 @@
 package com.example.agent.controller;
 
 import com.example.agent.controller.dto.ProductDto;
-import com.example.agent.service.impl.ProductService;
+import com.example.agent.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class ProductController {
     }
 
     @PostMapping(path = "/", consumes = {"multipart/form-data"})
+    @PreAuthorize("hasAuthority('PRODUCT_CRUD_PRIVILEGE')")
     public ResponseEntity<String> createProduct(@RequestPart("obj") @Valid ProductDto productDto, @RequestPart("photos") List<MultipartFile> files) {
         try {
             productService.createProduct(productDto, files);
@@ -42,6 +44,7 @@ public class ProductController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAuthority('PRODUCT_CRUD_PRIVILEGE')")
     public ResponseEntity<String> updateProduct(@RequestBody ProductDto productDto) {
         try {
             productService.updateProduct(productDto);
@@ -53,6 +56,7 @@ public class ProductController {
     }
 
     @PostMapping(path = "/updatePhoto", consumes = {"multipart/form-data"})
+    @PreAuthorize("hasAuthority('PRODUCT_CRUD_PRIVILEGE')")
     public ResponseEntity<String> updatePhoto(@RequestPart("obj") @Valid ProductDto productDto, @RequestPart("photos") List<MultipartFile> files) {
         try {
             productService.updateProductPhoto(productDto, files);
@@ -74,6 +78,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{productId}")
+    @PreAuthorize("hasAuthority('PRODUCT_CRUD_PRIVILEGE')")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
         try {
             productService.deleteProduct(productId);

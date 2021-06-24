@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
-    @Query(value = "SELECT id, name, picture, price, quantity FROM product as p, agent_products as ap" +
-            " WHERE ap.user_id = :id and p.id = ap.product_id", nativeQuery = true)
-    List<Product> findProductsByAgent (@Param("id") Long id);
-
+    @Query(value = "SELECT * FROM product WHERE user_id = :id", nativeQuery = true)
+    List<Product> findProductsByAgentId(@Param("id") Long id);
 }

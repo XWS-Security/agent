@@ -1,7 +1,7 @@
 package com.example.agent.controller;
 
 import com.example.agent.exceptions.BadFileTypeException;
-import com.example.agent.service.impl.ImageService;
+import com.example.agent.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
