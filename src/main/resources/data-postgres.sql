@@ -1,0 +1,2 @@
+-- INSERT INTO agent_user (id, user_type , name, surname, email, password, last_password_reset_date, enabled, password_reset_failed)
+--  VALUES (1, 'AGENT_USER', 'Agent', 'Agent', 'pharmacyisa6+agent@gmail.com', '$2a$10$/b6nrwDAIMHQv/wAeD004u91l/k.973ksiTVbL1yJCKw3TuVaHMf6', '2017-10-01 21:58:58.508-07', true, 0);
