@@ -68,7 +68,17 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ProductDto>> getProduct() {
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        try {
+            return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/agent")
+    @PreAuthorize("hasAuthority('PRODUCT_CRUD_PRIVILEGE')")
+    public ResponseEntity<List<ProductDto>> getProducts() {
         try {
             return new ResponseEntity<>(productService.getProductsByAgent(), HttpStatus.OK);
         } catch (Exception e) {

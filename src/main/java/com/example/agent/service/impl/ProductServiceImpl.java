@@ -92,6 +92,19 @@ public class ProductServiceImpl implements ProductService {
         return productDtos;
     }
 
+    @Override
+    public List<ProductDto> getAllProducts() {
+        Iterable<Product> products = productRepository.findAll();
+        List<ProductDto> productDtos = new ArrayList<>();
+
+        products.forEach(product -> {
+            ProductDto productDto = new ProductDto(product.getId(), product.getName(), product.getPicture(), product.getPrice(), product.getQuantity());
+            productDtos.add(productDto);
+        });
+
+        return productDtos;
+    }
+
     private String saveProductPhoto(List<MultipartFile> files) throws IOException {
         MultipartFile file = files.get(0);
         Path post_path = Paths.get(project_path);
