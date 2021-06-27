@@ -1,5 +1,7 @@
 package com.example.agent.model;
 
+import com.example.agent.exceptions.NotEnoughItemsOnStockException;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -22,9 +24,9 @@ public class Product {
     private String price;
 
     @Column(name = "quantity")
-    private String quantity;
+    private int quantity;
 
-    public Product(String name, String picture, String price, String quantity) {
+    public Product(String name, String picture, String price, int quantity) {
         this.name = name;
         this.picture = picture;
         this.price = price;
@@ -67,12 +69,17 @@ public class Product {
         this.price = price;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void decreaseQuantity(int n) {
+        if (this.quantity < n) throw new NotEnoughItemsOnStockException(name);
+        this.quantity -= n;
     }
 
     @Override

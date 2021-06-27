@@ -18,4 +18,6 @@ public interface ProductService {
     void updateProductPhoto(ProductDto productDto, List<MultipartFile> files) throws IOException;
 
     List<ProductDto> getProductsByAgent();
+
+    List<ProductDto> getAllProducts();
 }
