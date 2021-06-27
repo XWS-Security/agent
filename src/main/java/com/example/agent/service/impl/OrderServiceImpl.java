@@ -1,5 +1,6 @@
 package com.example.agent.service.impl;
 
+import com.example.agent.model.Agent;
 import com.example.agent.model.Order;
 import com.example.agent.model.OrderItem;
 import com.example.agent.model.Product;
@@ -7,6 +8,7 @@ import com.example.agent.repository.OrderItemRepository;
 import com.example.agent.repository.OrderRepository;
 import com.example.agent.repository.ProductRepository;
 import com.example.agent.service.OrderService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
             Optional<Product> optional = productRepository.findById(orderItem.getId());
             if (optional.isPresent()) {
                 Product product = optional.get();
-                OrderItem item = new OrderItem(product, orderItem.getAmount(), orderItem.getPrice());
+                OrderItem item = new OrderItem(product, orderItem.getAmount(), product.getPrice());
                 items.add(item);
                 product.decreaseQuantity(item.getAmount());
                 modifiedProducts.add(product);
@@ -48,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAgentOrders() {
-        return null;
+        Agent agent = (Agent) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return orderRepository.findByAgentId(agent.getId());
     }
 }

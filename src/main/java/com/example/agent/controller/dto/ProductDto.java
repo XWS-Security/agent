@@ -6,14 +6,14 @@ public class ProductDto implements Serializable {
     private Long id;
     private String name;
     private String picture;
-    private String price;
+    private int price;
     private int quantity;
 
     public ProductDto() {
 
     }
 
-    public ProductDto(Long id, String name, String picture, String price, int quantity) {
+    public ProductDto(Long id, String name, String picture, int price, int quantity) {
         this.id = id;
         this.name = name;
         this.picture = picture;
@@ -37,11 +37,11 @@ public class ProductDto implements Serializable {
         this.picture = picture;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
