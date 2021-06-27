@@ -21,12 +21,12 @@ public class Product {
     private String picture;
 
     @Column(name = "price")
-    private String price;
+    private int price;
 
     @Column(name = "quantity")
     private int quantity;
 
-    public Product(String name, String picture, String price, int quantity) {
+    public Product(String name, String picture, int price, int quantity) {
         this.name = name;
         this.picture = picture;
         this.price = price;
@@ -61,11 +61,11 @@ public class Product {
         this.picture = picture;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
