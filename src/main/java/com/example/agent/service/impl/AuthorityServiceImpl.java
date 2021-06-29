@@ -2,6 +2,7 @@ package com.example.agent.service.impl;
 
 import com.example.agent.model.Role;
 import com.example.agent.repository.AuthorityRepository;
+import com.example.agent.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

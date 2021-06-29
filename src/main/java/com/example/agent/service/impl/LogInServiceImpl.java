@@ -5,6 +5,7 @@ import com.example.agent.controller.dto.UserTokenState;
 import com.example.agent.model.User;
 import com.example.agent.repository.UserRepository;
 import com.example.agent.security.TokenUtils;
+import com.example.agent.service.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

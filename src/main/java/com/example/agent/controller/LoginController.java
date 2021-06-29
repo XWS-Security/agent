@@ -4,13 +4,16 @@ import com.example.agent.controller.dto.LogInDto;
 import com.example.agent.controller.dto.UserTokenState;
 import com.example.agent.model.User;
 import com.example.agent.security.TokenUtils;
+import com.example.agent.service.LogInService;
 import com.example.agent.service.impl.CustomUserDetailsService;
-import com.example.agent.service.impl.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +35,6 @@ public class LoginController {
     @PostMapping("/")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody LogInDto authenticationRequest) {
         try {
-            System.out.println(authenticationRequest);
             UserTokenState state = logInService.logIn(authenticationRequest);
             return ResponseEntity.ok(state);
         } catch (Exception e) {

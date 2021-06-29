@@ -1,13 +1,18 @@
 package com.example.agent.service.impl;
 
 import com.example.agent.controller.dto.RegisterDto;
-import com.example.agent.exceptions.*;
+import com.example.agent.exceptions.BadActivationCodeException;
+import com.example.agent.exceptions.PasswordIsNotValid;
+import com.example.agent.exceptions.PasswordsDoNotMatch;
+import com.example.agent.exceptions.UserAlreadyExistsException;
 import com.example.agent.mail.AccountActivationLinkMailFormatter;
 import com.example.agent.mail.MailService;
 import com.example.agent.model.Agent;
 import com.example.agent.model.Role;
 import com.example.agent.model.User;
 import com.example.agent.repository.UserRepository;
+import com.example.agent.service.AuthorityService;
+import com.example.agent.service.RegisterService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,17 +25,10 @@ import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
-
     private final UserRepository userRepository;
     private final AuthorityService authService;
     private final PasswordEncoder passwordEncoder;
     private final MailService<String> mailService;
-
-//    @Value("${CONTENT}")
-//    private String contentMicroserviceURI;
-//
-//    @Value("${FOLLOWER}")
-//    private String followerMicroserviceURI;
 
     @Autowired
     public RegisterServiceImpl(UserRepository userRepository,
@@ -45,7 +43,6 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public Agent register(RegisterDto dto, String siteURL) throws MessagingException, PasswordIsNotValid, SSLException {
-
         if (!dto.getPassword().equals(dto.getRepeatedPassword())) {
             throw new PasswordsDoNotMatch();
         }

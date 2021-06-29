@@ -5,6 +5,7 @@ import com.example.agent.model.Agent;
 import com.example.agent.model.Product;
 import com.example.agent.repository.AgentRepository;
 import com.example.agent.repository.ProductRepository;
+import com.example.agent.service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
 
         Agent agent = (Agent) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ArrayList<Product> products = (ArrayList<Product>) productRepository.findProductsByAgent(agent.getId());
+        ArrayList<Product> products = (ArrayList<Product>) productRepository.findProductsByAgentId(agent.getId());
         products.add(product);
 
         agent.setProducts(products);
@@ -49,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long productId) {
         Agent agent = (Agent) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Product> products = productRepository.findProductsByAgent(agent.getId());
+        List<Product> products = productRepository.findProductsByAgentId(agent.getId());
         products.remove(productRepository.findById(productId).get());
         productRepository.deleteById(productId);
     }
@@ -80,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProductsByAgent() {
         Agent agent = (Agent) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Product> products = productRepository.findProductsByAgent(agent.getId());
+        List<Product> products = productRepository.findProductsByAgentId(agent.getId());
         List<ProductDto> productDtos = new ArrayList<>();
 
         products.forEach(product -> {

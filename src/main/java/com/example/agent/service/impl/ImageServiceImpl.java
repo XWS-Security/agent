@@ -2,6 +2,7 @@ package com.example.agent.service.impl;
 
 import com.example.agent.controller.dto.MediaFileDto;
 import com.example.agent.exceptions.BadFileTypeException;
+import com.example.agent.service.ImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;

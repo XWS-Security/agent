@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("AGENT_USER")
 public class Agent extends User {
-    private transient final String administrationRole = "ROLE_AGENT_USER";
+    private transient final String administrationRole = "ROLE_AGENT";
 
     @Column(name = "mail_activation_code", length = 64)
     private String activationCode;
