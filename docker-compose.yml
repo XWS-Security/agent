@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+
+  agentapplication:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        STAGE: ${STAGE:-dev}
+      target: ${TARGET:-appWebServerRuntime}
+    image: lukadoric/agentapplication
+    container_name: agentapplication
+    restart: on-failure
+    networks:
+      - nistagram-network
+    environment:
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_DOMAIN: ${DATABASE_DOMAIN}
+      DATABASE_SCHEMA: ${DATABASE_SCHEMA}
+      DATABASE_PORT: ${DATABASE_PORT}
+      NISTAGRAM: ${CAMPAIGN_MICROSERVICE}
+      AGENT_MICROSERVICE_CERTIFICATE: ${AGENT_MICROSERVICE_CERTIFICATE}
+      AGENT_PORT: ${ACCOUNT_PORT}
+    depends_on: 
+      - postgres
+    volumes:
+      - /data/certificates
+      
+  gateway:
+    image: lukadoric/agent-front
+    ports:
+      - 8082:8082
+    networks:
+      - agent-network
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    
+  postgresagent:
+    image: postgres:${POSTGRES_VERSION-13}
+    container_name: postgres
+    restart: always
+    networks:
+      - agent-network
+    expose:
+      - 5433
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  agent-network:
+    name: agent-network
+    driver: bridge
