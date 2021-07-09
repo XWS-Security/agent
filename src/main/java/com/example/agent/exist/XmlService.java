@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class XmlService {
@@ -31,8 +32,12 @@ public class XmlService {
     private String documentPath;
 
     public void save(CampaignReport report) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        saveAll(List.of(report));
+    }
+
+    public void saveAll(List<CampaignReport> reportList) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         List<CampaignReport> reports = readAll();
-        reports.add(report);
+        reports.addAll(reportList);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -86,7 +91,7 @@ public class XmlService {
 
     private Element toElement(CampaignReport report, Document document) {
         Element element = document.createElement("report");
-        element.setAttribute("id", Integer.toString(report.getId()));
+        element.setAttribute("id", generateId());
         element.appendChild(createAttributeElement("likes", Integer.toString(report.getLikes()), document));
         element.appendChild(createAttributeElement("dislikes", Integer.toString(report.getDislikes()), document));
         element.appendChild(createAttributeElement("comments", Integer.toString(report.getComments()), document));
@@ -108,5 +113,12 @@ public class XmlService {
         Element element = document.createElement(name);
         element.appendChild(document.createTextNode(value));
         return element;
+    }
+
+    private String generateId() {
+        Random random = new Random();
+        var result = Integer.toString(random.ints(1, 100000).findFirst().getAsInt());
+        System.out.println(result);
+        return result;
     }
 }
