@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
                         BasicAuthenticationFilter.class);
         //    Enables SSL
-        //    http.requiresChannel().anyRequest().requiresSecure();
+            http.requiresChannel().anyRequest().requiresSecure();
     }
 
     @Override
