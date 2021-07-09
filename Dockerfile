@@ -1,12 +1,12 @@
 FROM maven AS appServerBuild
 ARG STAGE=dev
-ARG APPLLICATION_REPOSITORY=accountmicroservice
+ARG APPLLICATION_REPOSITORY=agent
 WORKDIR /app
-RUN curl -L https://github.com/XWS-Security/accountmicroservice/archive/refs/heads/certificates.tar.gz | tar -xz && \
-    cd accountmicroservice-certificates && \
+RUN curl -L https://github.com/XWS-Security/agent/archive/refs/heads/certificates.tar.gz | tar -xz && \
+    cd agent-certificates && \
     mvn package -P${STAGE} -DskipTests
     
 FROM openjdk AS appWebServerRuntime
-COPY --from=appServerBuild app/accountmicroservice-certificates/target/pki-0.0.1-SNAPSHOT.jar ./
+COPY --from=appServerBuild app/agent-certificates/target/agent-0.0.1-SNAPSHOT.jar ./
 EXPOSE 8080
-CMD java -jar pki-0.0.1-SNAPSHOT.jar
+CMD java -jar agent-0.0.1-SNAPSHOT.jar
