@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   agentapplication:
     build:
       context: ./
@@ -13,16 +12,15 @@ services:
     container_name: agentapplication
     restart: on-failure
     networks:
-      - nistagram-network
+      - agent-network
     environment:
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_DOMAIN: ${DATABASE_DOMAIN}
       DATABASE_SCHEMA: ${DATABASE_SCHEMA}
-      DATABASE_PORT: ${DATABASE_PORT}
       NISTAGRAM: ${CAMPAIGN_MICROSERVICE}
       AGENT_MICROSERVICE_CERTIFICATE: ${AGENT_MICROSERVICE_CERTIFICATE}
-      AGENT_PORT: ${ACCOUNT_PORT}
+      AGENT_PORT: ${AGENT_PORT}
     depends_on: 
       - postgres
     volumes:
@@ -38,15 +36,15 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
-    
-  postgresagent:
+
+  postgres:
     image: postgres:${POSTGRES_VERSION-13}
     container_name: postgres
     restart: always
     networks:
       - agent-network
     expose:
-      - 5433
+      - 5432
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
