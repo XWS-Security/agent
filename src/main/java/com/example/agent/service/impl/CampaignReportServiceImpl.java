@@ -1,5 +1,6 @@
 package com.example.agent.service.impl;
 
+import com.example.agent.controller.dto.AgentReportDto;
 import com.example.agent.controller.dto.GenerateCampaignReportDto;
 import com.example.agent.exist.XmlService;
 import com.example.agent.model.CampaignReport;
@@ -18,6 +19,9 @@ import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class CampaignReportServiceImpl implements CampaignReportService {
@@ -32,12 +36,18 @@ public class CampaignReportServiceImpl implements CampaignReportService {
 
     @Override
     public void generateReport(GenerateCampaignReportDto dto) throws IOException, ParserConfigurationException, SAXException, TransformerException {
-//        var info = getCampaignInfo(dto);
-        var report = new CampaignReport(2, 15, 1, 3, 2000.00);
-        existService.save(report);
+        var info = getCampaignInfo(dto);
+        var reports = new ArrayList<CampaignReport>();
+        for (var reportInfo : info) {
+            var report = new CampaignReport(2, reportInfo.getLikes(), reportInfo.getDislikes(), reportInfo.getComments(), 2000.00);
+            reports.add(report);
+            System.out.println("Result: " + report);
+
+        }
+        existService.saveAll(reports);
     }
 
-    private String getCampaignInfo(GenerateCampaignReportDto dto) throws SSLException {
+    private List<AgentReportDto> getCampaignInfo(GenerateCampaignReportDto dto) throws SSLException {
         // SSL
         SslContext sslContext = SslContextBuilder
                 .forClient()
@@ -56,10 +66,9 @@ public class CampaignReportServiceImpl implements CampaignReportService {
                 .uri("/report/")
                 .headers(h -> h.setBearerAuth(dto.getToken()))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(AgentReportDto[].class)
                 .block();
 
-        System.out.println("Result: " + result);
-        return result;
+        return Arrays.asList(result.clone());
     }
 }

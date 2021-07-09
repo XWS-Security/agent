@@ -57,4 +57,15 @@ public class CampaignReport {
     public void setRevenue(double revenue) {
         this.revenue = revenue;
     }
+
+    @Override
+    public String toString() {
+        return "CampaignReport{" +
+                "id=" + id +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", comments=" + comments +
+                ", revenue=" + revenue +
+                '}';
+    }
 }

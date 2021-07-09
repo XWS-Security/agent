@@ -1,6 +1,7 @@
 package com.example.agent.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -32,16 +33,19 @@ public class Order {
     @Column(name = "address")
     private DeliveryAddress address;
 
+    private Date date;
+
     public Order() {
     }
 
-    public Order(String name, String surname, String phoneNumber, String email, List<OrderItem> items, DeliveryAddress address) {
+    public Order(String name, String surname, String phoneNumber, String email, List<OrderItem> items, DeliveryAddress address, Date date) {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.items = items;
         this.address = address;
+        this.date = date;
     }
 
     public Long getId() {
@@ -98,5 +102,13 @@ public class Order {
 
     public void setAddress(DeliveryAddress address) {
         this.address = address;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
