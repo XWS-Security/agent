@@ -34,6 +34,7 @@ build/
 
 ### File system ###
 src/main/resources/images
+src/main/resources/xml
 
 ### Certificates ###
 certificates
