@@ -2,6 +2,7 @@ package com.example.agent.controller.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class AgentReportDto implements Serializable {
     private long campaignId;
@@ -11,6 +12,8 @@ public class AgentReportDto implements Serializable {
     private Date dateStart;
     private Date dateEnd;
     private Date date;
+    private List<UsernameNumbersDto> clicks;
+    private List<UsernameNumbersDto> views;
 
     public AgentReportDto() {
     }
@@ -71,16 +74,19 @@ public class AgentReportDto implements Serializable {
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "AgentReportDto{" +
-                "campaignId=" + campaignId +
-                ", likes=" + likes +
-                ", dislikes=" + dislikes +
-                ", comments=" + comments +
-                ", dateStart=" + dateStart +
-                ", dateEnd=" + dateEnd +
-                ", date=" + date +
-                '}';
+    public List<UsernameNumbersDto> getClicks() {
+        return clicks;
+    }
+
+    public void setClicks(List<UsernameNumbersDto> clicks) {
+        this.clicks = clicks;
+    }
+
+    public List<UsernameNumbersDto> getViews() {
+        return views;
+    }
+
+    public void setViews(List<UsernameNumbersDto> views) {
+        this.views = views;
     }
 }
