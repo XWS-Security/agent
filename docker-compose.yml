@@ -22,7 +22,7 @@ services:
       AGENT_MICROSERVICE_CERTIFICATE: ${AGENT_MICROSERVICE_CERTIFICATE}
       AGENT_PORT: ${AGENT_PORT}
     depends_on: 
-      - postgres
+      - postgresagent
     volumes:
       - /data/certificates
       
@@ -37,14 +37,14 @@ services:
       restart_policy:
         condition: on-failure
 
-  postgres:
+  postgresagent:
     image: postgres:${POSTGRES_VERSION-13}
-    container_name: postgres
+    container_name: postgresagent
     restart: always
     networks:
       - agent-network
-    ports:
-      - 5433:5432
+    expose:
+      - 5432
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
