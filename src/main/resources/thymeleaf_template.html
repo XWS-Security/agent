@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <h3 style="text-align: center;">
+      <span th:text="'Report on campaign'"></span>
+    </h3>
+    <h4 style="text-align: left;">
+      'Campaign duration:' ${date}
+    </h4>
+    <h4 style="text-align: left;">
+      'People have liked this campaign:' ${likes} 'times'
+    </h4>
+    <h4 style="text-align: left;">
+      'People have disliked this campaign:' ${dislikes} 'times'
+    </h4>
+    <h4 style="text-align: left;">
+      'People have commented on this campaign:' ${comments} 'times'
+    </h4>
+    <h4 style="text-align: left;">
+      'During this campaign total revenue generated was:' ${revenue} 'USD'
+    </h4>
+     <h4 style="text-align: left;">
+      'People have clicked on this campaign:'
+    </h4>
+    <h5 style="text-align: center;">
+    	$clicks
+    </h5>
+  </body>
+</html>

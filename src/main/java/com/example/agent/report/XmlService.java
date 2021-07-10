@@ -1,4 +1,4 @@
-package com.example.agent.exist;
+package com.example.agent.report;
 
 import com.example.agent.exceptions.ReportNotFoundException;
 import com.example.agent.model.CampaignReport;
@@ -45,6 +45,7 @@ public class XmlService {
 
         Element rootElement = document.createElement("reports");
         for (CampaignReport r : reports) {
+            System.out.println(r);
             Element e = toElement(r, document);
             rootElement.appendChild(e);
         }
@@ -96,6 +97,10 @@ public class XmlService {
         element.appendChild(createAttributeElement("dislikes", Integer.toString(report.getDislikes()), document));
         element.appendChild(createAttributeElement("comments", Integer.toString(report.getComments()), document));
         element.appendChild(createAttributeElement("revenue", Double.toString(report.getRevenue()), document));
+        element.appendChild(createAttributeElement("campaignId", Long.toString(report.getCampaignId()), document));
+        element.appendChild(createAttributeElement("date", report.getDate(), document));
+        element.appendChild(createAttributeElement("clicks", report.getClicks(), document));
+        element.appendChild(createAttributeElement("views", Integer.toString(report.getViews()), document));
         return element;
     }
 
@@ -106,6 +111,10 @@ public class XmlService {
         campaignReport.setDislikes(Integer.parseInt(element.getElementsByTagName("dislikes").item(0).getTextContent()));
         campaignReport.setComments(Integer.parseInt(element.getElementsByTagName("comments").item(0).getTextContent()));
         campaignReport.setRevenue(Double.parseDouble(element.getElementsByTagName("revenue").item(0).getTextContent()));
+        campaignReport.setCampaignId(Long.parseLong(element.getElementsByTagName("campaignId").item(0).getTextContent()));
+        campaignReport.setDate((element.getElementsByTagName("date").item(0).getTextContent()));
+        campaignReport.setClicks((element.getElementsByTagName("clicks").item(0).getTextContent()));
+        campaignReport.setViews(Integer.parseInt(element.getElementsByTagName("views").item(0).getTextContent()));
         return campaignReport;
     }
 
