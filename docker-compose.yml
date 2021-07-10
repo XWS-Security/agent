@@ -21,6 +21,8 @@ services:
       NISTAGRAM: ${CAMPAIGN_MICROSERVICE}
       AGENT_MICROSERVICE_CERTIFICATE: ${AGENT_MICROSERVICE_CERTIFICATE}
       AGENT_PORT: ${AGENT_PORT}
+      CONTENT_PATH: ${CONTENT_PATH}
+      XML_PATH: ${XML_PATH}
     depends_on: 
       - postgresagent
     volumes:
