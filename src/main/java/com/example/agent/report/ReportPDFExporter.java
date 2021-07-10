@@ -16,8 +16,6 @@ import java.util.List;
 
 @Service
 public class ReportPDFExporter {
-    @Value("${PDF_REPORTS_PATH}")
-    private String folderPath;
     private List<CampaignReport> reports;
 
     public void setReports(List<CampaignReport> reports) {
