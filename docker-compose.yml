@@ -25,7 +25,9 @@ services:
       - postgresagent
     volumes:
       - /data/certificates
-      
+      - /data/images
+      - /data/xml
+
   gateway:
     image: lukadoric/agent-front
     ports:
